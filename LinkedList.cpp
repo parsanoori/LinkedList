@@ -33,7 +33,7 @@ struct LinkedList::Node** LinkedList::getAddressOfPtr(int index, const bool isAd
  */
 void LinkedList::add(int x)
 {
-	struct Node** pp = getAddressOfPtr(size,true); // TC: O(n)
+	struct Node** pp = getAddressOfPtr(size, true); // TC: O(n)
 	*pp = new Node { x, nullptr };
 	size++;
 }
@@ -92,12 +92,45 @@ void LinkedList::print()
 {
 	struct Node** pp = &first;
 
-	std::cout << std::endl << "List size is : " << size << std::endl
+	std::cout << std::endl
+		  << "List size is : " << size << std::endl
 		  << "List is : ";
 	while (*pp) {
 		std::cout << (*pp)->x << " ";
 		pp = &(*pp)->next;
 	}
-	std::cout << std::endl << std::endl;
+	std::cout << std::endl
+		  << std::endl;
 }
+
+/**
+ * Remove repeats
+ * Each outer loop happens by the amount
+ * of the elements left on the list
+ * hence the TC of it is in the form of 
+ * 1 + 2 + 3 .... n 
+ * so the TC is O(n^2)
+ *
+ * NOTE: I didn't thoroughly thought of
+ * start and end of the sequence but it's
+ * preciese enough for the asymptotic notation
+ */
+void LinkedList::removeRepeats()
+{
+	struct Node** pp1 = &first;
+	struct Node** pp2;
+	struct Node* next;
+	while (*pp1) {
+		int value = (*pp1)->x;
+		pp2 = &(*pp1)->next;
+		while (*pp2)
+			if ((*pp2)->x == value) {
+				next = (*pp2)->next;
+				delete *pp2;
+				*pp2 = next;
+			}
+	}
+}
+
+
 

@@ -23,6 +23,7 @@ class LinkedList {
 	int search(int x);
 	void change(int index, int x);
 	void print();
+	void removeRepeats();
 };
 
 #endif
