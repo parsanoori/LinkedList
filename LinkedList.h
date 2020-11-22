@@ -13,7 +13,7 @@ class LinkedList {
 	struct Node* first = nullptr;
 	int size = 0;
 
-	struct Node** getAddressOfPtr(int index); 
+	struct Node** getAddressOfPtr(int index,const bool isAddCalling); 
 
     public:
 

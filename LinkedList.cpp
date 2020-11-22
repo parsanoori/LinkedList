@@ -12,9 +12,9 @@
  * are some constant actions this function
  * takes TC of O(n)
  */
-struct LinkedList::Node** LinkedList::getAddressOfPtr(int index)
+struct LinkedList::Node** LinkedList::getAddressOfPtr(int index, const bool isAddCalling = false)
 {
-	if (index >= size)
+	if (!isAddCalling && index >= size || isAddCalling && index > size)
 		throw std::out_of_range("Index is bigger than size");
 
 	struct Node** pp = &first;
@@ -33,7 +33,7 @@ struct LinkedList::Node** LinkedList::getAddressOfPtr(int index)
  */
 void LinkedList::add(int x)
 {
-	struct Node** pp = getAddressOfPtr(size - 1); // TC: O(n)
+	struct Node** pp = getAddressOfPtr(size,true); // TC: O(n)
 	*pp = new Node { x, nullptr };
 	size++;
 }
@@ -70,16 +70,16 @@ int LinkedList::search(int x)
 {
 	struct Node** pp = &first;
 	int i;
-	for (i=0; i<size &&(*pp)->x != x; i++)
-	       pp = &(*pp)->next;
-	return i==size ? -1 : i; 
+	for (i = 0; i < size && (*pp)->x != x; i++)
+		pp = &(*pp)->next;
+	return i == size ? -1 : i;
 }
 
 /**
  * Search takes O(n) changing vlue takes
  * constant time
  */
-void LinkedList::change(int index,int x)
+void LinkedList::change(int index, int x)
 {
 	struct Node** pp = getAddressOfPtr(index);
 	(*pp)->x = x;
@@ -91,15 +91,13 @@ void LinkedList::change(int index,int x)
 void LinkedList::print()
 {
 	struct Node** pp = &first;
-	
-	std::cout << "List is : "; 
-	while(*pp)
-	{
-		std::cout << (*pp)->x << " "; 
+
+	std::cout << std::endl << "List size is : " << size << std::endl
+		  << "List is : ";
+	while (*pp) {
+		std::cout << (*pp)->x << " ";
 		pp = &(*pp)->next;
 	}
-	std::cout << std::endl;
+	std::cout << std::endl << std::endl;
 }
-
-
 
