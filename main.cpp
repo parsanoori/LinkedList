@@ -21,5 +21,11 @@ int main()
 	list1.add(3);
 	list1.reverse();
 	list1.print();
+
+	LinkedList e,o;
+	list1.split(o,e);
+
+	e.print();
+	o.print();
 	return 0;
 }

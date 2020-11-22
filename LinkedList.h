@@ -13,7 +13,12 @@ class LinkedList {
 	struct Node* first = nullptr;
 	int size = 0;
 
-	struct Node** getAddressOfPtr(int index,const bool isAddCalling); 
+	struct Node** getAddressOfPtr(int index,const bool isAddCalling) const; 
+	void swap(struct Node* left, struct Node* right);
+	void reverse(struct Node* forward,int indexForward);
+
+	void split(LinkedList &o,LinkedList& e,struct Node* it,int index)const;
+
 
     public:
 
@@ -24,6 +29,10 @@ class LinkedList {
 	void change(int index, int x);
 	void print();
 	void removeRepeats();
+	void reverse();
+	void split(LinkedList &o,LinkedList& e);
+	int intersection(LinkedList& l2);
+	bool detectLoops();
 };
 
 #endif

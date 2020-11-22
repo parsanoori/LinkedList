@@ -55,7 +55,7 @@ void LinkedList::remove(int index)
 /**
  * The only line has TC of O(n)
  */
-int LinkedList::get(int index)
+int LinkedList::get(int index) const
 {
 	return (*getAddressOfPtr(index))->x;
 }
@@ -139,7 +139,7 @@ void LinkedList::removeRepeats()
 
 /**
  * Swaps the value of two givcn nodes
- * the TC is obviously O(1)
+ * the TC is obviousy O(1)
  */
 void LinkedList::swap(struct Node* left, struct Node* right)
 {
@@ -147,7 +147,6 @@ void LinkedList::swap(struct Node* left, struct Node* right)
 	left->x = right->x;
 	right->x = tmp;
 }
-
 
 /**
  * For each call it should find the element at
@@ -168,13 +167,87 @@ void LinkedList::reverse(struct LinkedList::Node* forward, int indexForward)
 	reverse(forward->next, indexForward + 1);
 }
 
-
 /**
  * Simple wrapper for other reverse above
  * hence the TC is O(n^2)
  */
 void LinkedList::reverse()
 {
-	reverse(first,0);
-
+	reverse(first, 0);
 }
+
+/**
+ * Simple iteration forcibly turned to recursion
+ * hence the TC is O(n)
+ */
+void LinkedList::split(LinkedList& o, LinkedList& e, struct LinkedList::Node* it, int index)
+{
+	if (!it)
+		return;
+
+	if (index % 2 == 0)
+		e.add(it->x);
+	else
+		o.add(it->x);
+
+	split(o, e, it->next, index + 1);
+}
+
+/**
+ * Wrapper of above function
+ */
+void LinkedList::split(LinkedList& o, LinkedList& e)
+{
+	LinkedList en, on;
+	split(en, on, first, 0);
+	e = en;
+	o = on;
+}
+
+/**
+ * Finds index of which this LinkedList intersects
+ * with the other.
+ * Each for loop execution takes time of 1 .... size | size2
+ * times of something some of these are in O(n^2)
+ */
+int LinkedList::intersection(LinkedList& l2)
+{
+	int size2 = l2.size, i;
+
+	for (i = 0; i < size && i < size2; i++)
+		if (get(size - i - 1) != l2.get(size2 - i - 1))
+			break;
+
+	return i == size || i == size2 ? -1 : size - i;
+}
+
+/**
+ * Floyd's way is used. One fast pointer and other sow
+ * fast is steps by 2 and sow by one.
+ * Distance increases by 1 one each iteration and starts
+ * from 0 <= k <= n once they are both in the cycle
+ * if there is a loop once the difference becomes n which
+ * means thay they are on the same place in the cycle.
+ * This needs at maximum n actions which means the TC is
+ * O(n)
+ */
+
+bool LinkedList::detectLoops()
+{
+	Node *s, *f;
+	s = f = first;
+
+	while (s && f && f->next) {
+		s = s->next; // move slow by one
+		f = f->next->next; // move fast by two
+
+		if (s == f) // if they fall in each other
+			return true;
+	
+	}
+
+	// if iteration stops means list has end
+	return false;
+}
+
+
