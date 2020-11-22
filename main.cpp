@@ -27,5 +27,19 @@ int main()
 
 	e.print();
 	o.print();
+
+	o.add(5);
+	o.print();
+	o.removeMiddle();
+	o.print();
+
+	LinkedList l2;
+	l2.add(1);
+	l2.add(6);
+	l2.add(3);
+	l2.add(2);
+	l2.mergeSort();
+	l2.print();
+	
 	return 0;
 }

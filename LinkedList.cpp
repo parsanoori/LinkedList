@@ -1,4 +1,5 @@
 #include "LinkedList.h"
+#include <stdexcept>
 /***
  * Due to ease of typing and reading the
  * comments I alias TC as Time Complexity
@@ -55,7 +56,7 @@ void LinkedList::remove(int index)
 /**
  * The only line has TC of O(n)
  */
-int LinkedList::get(int index) const
+int LinkedList::get(int index)
 {
 	return (*getAddressOfPtr(index))->x;
 }
@@ -243,11 +244,133 @@ bool LinkedList::detectLoops()
 
 		if (s == f) // if they fall in each other
 			return true;
-	
 	}
 
 	// if iteration stops means list has end
 	return false;
 }
 
+void LinkedList::removeMiddle(struct LinkedList::Node* it, int i)
+{
+	if (i == size / 2 - 1) {
+		Node* oneAfterMiddle = it->next->next;
+		delete it->next;
+		it->next = oneAfterMiddle;
+		return;
+	}
+	removeMiddle(it->next, i + 1);
+}
+
+/**
+ * Simple iteration O(n/2)
+ */
+void LinkedList::removeMiddle()
+{
+	if (size % 2 == 0)
+		throw std::logic_error("Lenght must be even");
+	removeMiddle(first, 0);
+}
+
+/**
+ * MergeSort for sorting the list
+ * lg(n) times the merge will take happpen hence
+ * the TC complexity of this function is O(nlogn)
+ */
+void LinkedList::mergeSort()
+{
+	struct Node* first = this->first;
+
+	if (first == NULL)
+		return;
+	
+	struct Node *start1 = nullptr, *end1 = nullptr,
+		    *start2 = nullptr, *end2 = nullptr,
+		    *prevend = nullptr;
+
+	int gap;
+	for (gap = 1; gap < size; gap = gap * 2) { // lg(n) time this will run
+		start1 = first;
+		while (start1) {
+			//setting start1
+			bool isFirstIter = false;
+			if (start1 == first)
+				isFirstIter = true;
+
+			//setting end1
+			int counter = gap;
+			end1 = start1;
+			while (--counter && end1->next)
+				end1 = end1->next;
+
+			//setting start1
+			start2 = end1->next;
+			if (!start2)
+				break;
+
+			//setting end1
+			counter = gap;
+			end2 = start2;
+			while (--counter && end2->next)
+				end2 = end2->next;
+
+			//start1 of the next iteration
+			Node* temp = end2->next;
+
+			merge(start1, end1, start2, end2); // TC: O(lgn)
+
+			if (isFirstIter)
+				first = start1;
+			else
+				prevend->next = start1;
+
+			prevend = end2;
+			start1 = temp;
+		}
+		prevend->next = start1;
+	}
+}
+
+/**
+ * Like any other merge has TC of O(1)
+ */
+void LinkedList::merge(struct Node* start1, struct Node* end1,
+    struct Node* start2, struct Node* end2)
+{
+
+	struct Node *temp = NULL, *end2next = end2;
+
+	if (start1->x > start2->x) {
+		std::swap(start1, start2);
+		std::swap(end1, end2);
+	}
+
+	while (start1 != end1 && start2 != end2next) {
+		if (start1->next->x > start2->x) {
+			temp = start2->next;
+			start2->next = start1->next;
+			start1->next = start2;
+			start2 = temp;
+		}
+		start1 = start1->next;
+	}
+
+	if (start1 == end1)
+		start1->next = start2;
+	else
+		end2 = end1;
+}
+
+/**
+ * Since the loop happens n/2 time and 
+ * each time it takes n n-1 ... n/2
+ * times, it will take O(n^2)
+ */
+bool LinkedList::isPalindrome()
+{
+	struct Node* it = first;
+	for(int i=0; i<size/2; i++)
+		if (it->x != get(size-i-1))
+			return false;
+	return true;
+}
 
