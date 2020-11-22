@@ -17,6 +17,9 @@ int main()
 	
 	list1.removeRepeats();
 	list1.print();
-
+	
+	list1.add(3);
+	list1.reverse();
+	list1.print();
 	return 0;
 }

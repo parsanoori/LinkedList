@@ -124,17 +124,57 @@ void LinkedList::removeRepeats()
 	while (*pp1) {
 		int value = (*pp1)->x;
 		pp2 = &(*pp1)->next;
-		while (*pp2){
+		while (*pp2) {
 			if ((*pp2)->x == value) {
 				next = (*pp2)->next;
 				delete *pp2;
 				*pp2 = next;
 				size--;
-			} else pp2 = &(*pp2)->next;
+			} else
+				pp2 = &(*pp2)->next;
 		}
 		pp1 = &(*pp1)->next;
 	}
 }
 
+/**
+ * Swaps the value of two givcn nodes
+ * the TC is obviously O(1)
+ */
+void LinkedList::swap(struct Node* left, struct Node* right)
+{
+	int tmp = left->x;
+	left->x = right->x;
+	right->x = tmp;
+}
 
 
+/**
+ * For each call it should find the element at
+ * index of "size - indexForward - 1" which
+ * takes the time to iterate to reach it
+ * It is called for size/2 times
+ * whith indexForward from 0 ... n/2
+ * for each of these the iteration takes
+ * n n-1 ... n/2 times to reach the end
+ * hence the sum of these is the time taken
+ * by the func. So the TC is O(n^2)
+ */
+void LinkedList::reverse(struct LinkedList::Node* forward, int indexForward)
+{
+	if (indexForward >= size / 2)
+		return;
+	swap(forward, *getAddressOfPtr(size - indexForward - 1));
+	reverse(forward->next, indexForward + 1);
+}
+
+
+/**
+ * Simple wrapper for other reverse above
+ * hence the TC is O(n^2)
+ */
+void LinkedList::reverse()
+{
+	reverse(first,0);
+
+}
