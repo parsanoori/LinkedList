@@ -49,6 +49,7 @@ void LinkedList::remove(int index)
 	struct Node* next = (*pp)->next;
 	delete *pp;
 	(*pp) = next;
+	size--;
 }
 
 /**
@@ -123,12 +124,15 @@ void LinkedList::removeRepeats()
 	while (*pp1) {
 		int value = (*pp1)->x;
 		pp2 = &(*pp1)->next;
-		while (*pp2)
+		while (*pp2){
 			if ((*pp2)->x == value) {
 				next = (*pp2)->next;
 				delete *pp2;
 				*pp2 = next;
-			}
+				size--;
+			} else pp2 = &(*pp2)->next;
+		}
+		pp1 = &(*pp1)->next;
 	}
 }
 
