@@ -2,6 +2,7 @@
 #define LinkedListClass
 
 #include<stdexcept>
+#include<iostream>
 
 class LinkedList {
 	struct Node {
@@ -21,6 +22,7 @@ class LinkedList {
 	int get(int index);
 	int search(int x);
 	void change(int index, int x);
+	void print();
 };
 
 #endif
