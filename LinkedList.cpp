@@ -282,7 +282,7 @@ void LinkedList::mergeSort()
 
 	if (first == NULL)
 		return;
-	
+
 	struct Node *start1 = nullptr, *end1 = nullptr,
 		    *start2 = nullptr, *end2 = nullptr,
 		    *prevend = nullptr;
@@ -302,12 +302,12 @@ void LinkedList::mergeSort()
 			while (--counter && end1->next)
 				end1 = end1->next;
 
-			//setting start1
+			//setting start2
 			start2 = end1->next;
 			if (!start2)
 				break;
 
-			//setting end1
+			//setting end2
 			counter = gap;
 			end2 = start2;
 			while (--counter && end2->next)
@@ -333,11 +333,11 @@ void LinkedList::mergeSort()
 /**
  * Like any other merge has TC of O(1)
  */
-void LinkedList::merge(struct Node* start1, struct Node* end1,
-    struct Node* start2, struct Node* end2)
+void LinkedList::merge(struct Node*& start1, struct Node*& end1,
+    struct Node*& start2, struct Node*& end2)
 {
 
-	struct Node *temp = NULL, *end2next = end2;
+	struct Node *temp = NULL, *end2next = end2->next;
 
 	if (start1->x > start2->x) {
 		std::swap(start1, start2);
@@ -368,8 +368,8 @@ void LinkedList::merge(struct Node* start1, struct Node* end1,
 bool LinkedList::isPalindrome()
 {
 	struct Node* it = first;
-	for(int i=0; i<size/2; i++)
-		if (it->x != get(size-i-1))
+	for (int i = 0; i < size / 2; i++)
+		if (it->x != get(size - i - 1))
 			return false;
 	return true;
 }

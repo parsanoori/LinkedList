@@ -4,6 +4,7 @@
 #include <exception>
 #include <iostream>
 #include <stdexcept>
+#include <unistd.h>
 
 class LinkedList {
 	struct Node {
@@ -21,8 +22,8 @@ class LinkedList {
 	void split(LinkedList& o, LinkedList& e, struct Node* it, int index);
 	void removeMiddle(struct LinkedList::Node* it, int i);
 
-	void merge(struct Node* start1, struct Node* end1,
-	    struct Node* start2, struct Node* end2);
+	void merge(struct Node*& start1, struct Node*& end1,
+	    struct Node*& start2, struct Node*& end2);
 
     public:
 	void add(int x);
@@ -38,7 +39,7 @@ class LinkedList {
 	bool detectLoops();
 	void removeMiddle();
 	void mergeSort();
-	bool isPalindrome();	
+	bool isPalindrome();
 };
 
 #endif
